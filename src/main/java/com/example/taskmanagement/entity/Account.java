@@ -1,9 +1,9 @@
 package com.example.taskmanagement.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -11,36 +11,41 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String firstName;
-    private String lastName;
+
+    @Column(unique = true)
+    private String username;
+    private String password;
     private String role;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Task> tasks = new ArrayList<>();
 
     protected Account() {}
 
-    public Account(String firstName, String lastName, String role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Account(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
         this.role = role;
     }
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return username;
     }
 
     public long getId() {
         return this.id;
     }
 
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
+    public String getUsername() {
+        return this.username;
     }
 
     public String getRole() {
         return this.role;
+    }
+
+    public String getPassword() {
+        return this.password;
     }
 }

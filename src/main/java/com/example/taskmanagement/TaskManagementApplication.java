@@ -17,16 +17,4 @@ public class TaskManagementApplication {
     public static void main(String[] args) {
         SpringApplication.run(TaskManagementApplication.class, args);
     }
-
-    @Bean
-    public CommandLineRunner demo(AccountRepository accountRepository) {
-        return args -> {
-            accountRepository.save(new Account("Terry", "Nagashima", "Admin"));
-            accountRepository.save(new Account("Jack", "Bauer", "User"));
-            accountRepository.save(new Account("Chloe", "O'Brian", "User"));
-            accountRepository.save(new Account("Kim", "Bauer", "User"));
-            accountRepository.save(new Account("David", "Palmer", "User"));
-            accountRepository.save(new Account("Michelle", "Dessler", "User"));
-        };
-    }
 }

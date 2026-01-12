@@ -8,14 +8,41 @@
 <table>
     <tr>
         <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th>Username</th>
+        <th>Password(for development)</th>
     </tr>
     <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.password}"></td>
     </tr>
 </table>
+
+<table>
+    <tr>
+        <th>Title</th>
+    </tr>
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.title}"></td>
+    </tr>
+</table>
+
+<form action="/task" method="POST">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="date">Date</label>
+    <input type="date" id="date" name="taskDate" required>
+
+    <label for="startTime">Start Time</label>
+    <input type="time" id="startTime" name="startTime" required>
+
+    <label for="endTime">End Time</label>
+    <input type="time" id="endTime" name="endTime" required>
+
+    <button type="submit">Submit</button>
+</form>
+
+
 </body>
 </html>
