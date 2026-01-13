@@ -9,24 +9,28 @@
     <tr>
         <th>ID</th>
         <th>Username</th>
-        <th>Password(for development)</th>
     </tr>
     <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.username}"></td>
-        <td th:text="${user.password}"></td>
     </tr>
 </table>
-
+<h1>Users Tasks</h1>
 <table>
     <tr>
         <th>Title</th>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
     </tr>
     <tr th:each="task : ${tasks}">
         <td th:text="${task.title}"></td>
+        <td th:text="${task.taskDate}"></td>
+        <td th:text="${task.startTime}"></td>
+        <td th:text="${task.endTime}"></td>
     </tr>
 </table>
-
+<h1>Create New Task</h1>
 <form action="/task" method="POST">
     <label for="title">Title</label>
     <input type="text" id="title" name="title" required>
@@ -43,6 +47,9 @@
     <button type="submit">Submit</button>
 </form>
 
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out">
+</form>
 
 </body>
 </html>
