@@ -24,4 +24,11 @@ public class RegisterRequest{
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String checkPassword(){
+        if (this.password.length() < 6) {
+            return "Error: Password too short";
+        }
+        return "Success";
+    }
 }

@@ -6,7 +6,13 @@
 </head>
 <body>
     <h1>Register</h1>
-    <form method="post" action="/createAccount">
+    <div th:if="${success}" class="alert alert-success">
+        <p th:text="${success}"></p>
+    </div>
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+    <form th:action="@{/createAccount}" method="post">
         <label for="username">Username</label>
         <input type="text" id="username" name="username">
 

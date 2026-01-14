@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Objects;
 
 
 @Controller
@@ -21,17 +24,30 @@ public class RegisterController {
         this.accountRepository = accountRepository;
     }
 
-    @PostMapping("/register")
+    @GetMapping("/register")
     public String register(){
         return "register";
     }
 
     @PostMapping("/createAccount")
-    public String createAccount(@ModelAttribute RegisterRequest registration){
+    public String createAccount(@ModelAttribute RegisterRequest registration, RedirectAttributes redirectAttributes){
+        String check = registration.checkPassword();
 
-        Account account = new Account(registration.getUsername(), passwordEncoder.encode(registration.getPassword()), "User");
+        if (!"Success".equals(check)){
+            redirectAttributes.addFlashAttribute("error", check);
+            System.out.println("Password too short");
+            return "redirect:/register";
+        } else {
+            try {
+                Account account = new Account(registration.getUsername(), passwordEncoder.encode(registration.getPassword()), "User");
+                accountRepository.save(account);
+                redirectAttributes.addFlashAttribute("success", "Account created successfully");
+                return "redirect:/login";
+            } catch (IllegalStateException e) {
+                redirectAttributes.addFlashAttribute("error", e.getMessage());
+                return "redirect:/register";
+            }
 
-        accountRepository.save(account);
-        return "login";
+        }
     }
 }
