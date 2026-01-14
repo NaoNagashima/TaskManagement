@@ -6,6 +6,7 @@ import com.example.taskmanagement.repository.AccountRepository;
 import com.example.taskmanagement.repository.TaskRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,7 +31,7 @@ public class TaskController {
 
     @PostMapping("/task")
     public String createTask(@ModelAttribute Task task, Principal principal, Model model) {
-        Account account = accountRepository.findByUsername(principal.getName());
+        Account account = accountRepository.findByUsername(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
         task.setOwner(account);
         taskRepository.save(task);
 

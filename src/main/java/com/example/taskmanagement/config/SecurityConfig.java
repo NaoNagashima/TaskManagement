@@ -3,6 +3,7 @@ package com.example.taskmanagement.config;
 import com.example.taskmanagement.entity.Account;
 import com.example.taskmanagement.repository.AccountRepository;
 import com.example.taskmanagement.security.AccountUserDetailsService;
+import com.example.taskmanagement.security.CustomAuthFailureHandler;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthFailureHandler customAuthFailureHandler) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
@@ -30,6 +31,7 @@ public class SecurityConfig {
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
+                        .failureHandler(customAuthFailureHandler)
                         .permitAll())
                 .logout(logout -> logout.permitAll());
 
@@ -49,7 +51,8 @@ public class SecurityConfig {
     @Bean
     CommandLineRunner createDefaultUser(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (accountRepository.findByUsername("Nao") == null) {
+            boolean userExists = accountRepository.findByUsername("Nao").isPresent();
+            if (!userExists) {
                 Account user = new Account("Nao", passwordEncoder().encode("password"), "Admin");
                 accountRepository.save(user);
                 System.out.println("Created default user 'Nao' with password 'password'");

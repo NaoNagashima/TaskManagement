@@ -4,6 +4,7 @@ import com.example.taskmanagement.entity.Account;
 import com.example.taskmanagement.entity.Task;
 import com.example.taskmanagement.repository.AccountRepository;
 import com.example.taskmanagement.repository.TaskRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model, Principal principal) {
-        Account account = accountRepository.findByUsername(principal.getName());
+        Account account = accountRepository.findByUsername(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
         List<Task> tasks = taskRepository.findByOwner(account);
         model.addAttribute("tasks", tasks);
         model.addAttribute("users", accountRepository.findAll());

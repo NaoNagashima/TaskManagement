@@ -3,6 +3,7 @@ package com.example.taskmanagement.controller;
 import com.example.taskmanagement.dto.RegisterRequest;
 import com.example.taskmanagement.entity.Account;
 import com.example.taskmanagement.repository.AccountRepository;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,11 +32,14 @@ public class RegisterController {
 
     @PostMapping("/createAccount")
     public String createAccount(@ModelAttribute RegisterRequest registration, RedirectAttributes redirectAttributes){
-        String check = registration.checkPassword();
+        String errorUsername = registration.checkUsername(accountRepository);
+        String errorPassword = registration.checkPassword();
 
-        if (!"Success".equals(check)){
-            redirectAttributes.addFlashAttribute("error", check);
-            System.out.println("Password too short");
+        if (!"Success".equals(errorUsername)){
+            redirectAttributes.addFlashAttribute("error", errorUsername);
+            return "redirect:/register";
+        } else if (!"Success".equals(errorPassword)){
+            redirectAttributes.addFlashAttribute("error", errorPassword);
             return "redirect:/register";
         } else {
             try {
