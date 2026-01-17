@@ -28,7 +28,12 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model, Principal principal) {
         Account account = accountRepository.findByUsername(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
-        List<Task> tasks = taskRepository.findByOwner(account);
+        List<Task> tasks;
+        if (account.getRole().equals("ADMIN")) {
+            tasks = (List<Task>) taskRepository.findAll();
+        } else{
+            tasks = taskRepository.findByOwner(account);
+        }
         model.addAttribute("tasks", tasks);
         model.addAttribute("users", accountRepository.findAll());
         model.addAttribute("task", new Task());

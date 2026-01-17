@@ -4,7 +4,8 @@
     <title>Users</title>
 </head>
 <body>
-<h1>All Users</h1>
+<h1>Task Management Application</h1>
+<h2>All Users</h2>
 <table>
     <tr>
         <th>ID</th>
@@ -15,7 +16,7 @@
         <td th:text="${user.username}"></td>
     </tr>
 </table>
-<h1>Users Tasks</h1>
+<h2>Users Tasks</h2>
 <table>
     <tr>
         <th>Title</th>
@@ -28,12 +29,20 @@
         <td th:text="${task.taskDate}"></td>
         <td th:text="${task.startTime}"></td>
         <td th:text="${task.endTime}"></td>
+        <td>
+            <form th:action="@{/task/{id}(id=${task.id})}" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
 </table>
 
-<h1>Create New Task</h1>
+<h2>Create New Task</h2>
 
-
+<div th:if="${param.error}">
+    <p th:text="${param.error}"></p>
+</div>
 
 <form action="/task" method="POST">
     <label for="title">Title</label>

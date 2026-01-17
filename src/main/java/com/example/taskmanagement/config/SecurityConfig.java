@@ -53,7 +53,7 @@ public class SecurityConfig {
         return args -> {
             boolean userExists = accountRepository.findByUsername("Nao").isPresent();
             if (!userExists) {
-                Account user = new Account("Nao", passwordEncoder().encode("password"), "Admin");
+                Account user = new Account("Nao", passwordEncoder().encode("password"), "ADMIN");
                 accountRepository.save(user);
                 System.out.println("Created default user 'Nao' with password 'password'");
             }

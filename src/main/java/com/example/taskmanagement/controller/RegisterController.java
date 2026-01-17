@@ -43,7 +43,7 @@ public class RegisterController {
             return "redirect:/register";
         } else {
             try {
-                Account account = new Account(registration.getUsername(), passwordEncoder.encode(registration.getPassword()), "User");
+                Account account = new Account(registration.getUsername(), passwordEncoder.encode(registration.getPassword()), "USER");
                 accountRepository.save(account);
                 redirectAttributes.addFlashAttribute("success", "Account created successfully");
                 return "redirect:/login";
